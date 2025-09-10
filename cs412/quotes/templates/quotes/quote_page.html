@@ -1,0 +1,11 @@
+{# 
+    File: quote_page.html
+    Description: quote of the day page for Del Water Gap Quotes & Images.
+    Author: William Fugate wfugate@bu.edu
+#}
+{% extends 'quotes/base.html' %}
+    {% block content %}
+        <h1>Quote of the Day</h1>
+        <img src="{{ displayImage }} " width="400" height="auto"></img>
+        <p> {{ displayQuote }} </p>
+    {% endblock %}

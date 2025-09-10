@@ -1,0 +1,40 @@
+{# 
+    File: base.html
+    Description: Base template for Del Water Gap Quotes & Images.
+    Author: William Fugate wfugate@bu.edu
+#}
+{% load static %}
+<html>
+    <head>
+        <title>PERSON Quote of the day!</title>
+        <link rel="stylesheet" href="{% static 'quotes/styles.css' %}">
+    </head>
+    <body>
+        <header>
+        <h1>Del Water Gap Quotes & Images</h1>
+        <nav>
+            <ul>
+            <li>
+            <a href="{% url 'quote_page' %}">Random Quote</a> 
+            </li>
+            <li>
+            <a href="{% url 'show_all_page' %}">Show All</a> 
+            </li>
+            <li>
+            <a href="{% url 'about_page' %}">About</a>
+            </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+    
+        {% block content %}
+        {% endblock %}
+
+    </main>
+        <footer>
+            Page created by William Fugate
+        </footer>
+    </body>
+</html>
