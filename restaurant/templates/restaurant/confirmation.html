@@ -1,0 +1,39 @@
+<!--
+    File: restaurant/confirmation.html
+    Description: confirmation page for orders placed at McBurger's
+    Author: William Fugate wfugate@bu.edu
+-->
+
+{% extends 'restaurant/base.html' %}
+{% block content %}
+<div>
+    <h1>Order Confirmation</h1>
+    
+    <h2>Thank you for your order, {{ name }}!</h2>
+    
+    <h3>Contact Information:</h3>
+    <p>Name: {{ name }}</p>
+    <p>Email: {{ email }}</p>
+    <p>Phone: {{ phone }}</p>
+    
+    <h3>Items Ordered:</h3>
+    {% if ordered_items %}
+        {% for item in ordered_items %}
+            <p>- {{ item }}</p>
+        {% endfor %}
+    {% else %}
+        <p>No items were selected.</p>
+    {% endif %}
+    
+    <h3>Order Total: ${{ total_price|floatformat:2 }}</h3>
+
+    <h3>Special Instructions:</h3>
+    <p>{{ instructions }}</p>
+    
+    <h3>Expected Ready Time: {{ ready_time }}</h3>
+    
+    <p>We'll have your order ready for pickup at {{ ready_time }}. Thank you for choosing McBurger's!</p>
+    
+    <a href="{% url 'main' %}">Back to Main Page</a>
+</div>
+{% endblock %}
