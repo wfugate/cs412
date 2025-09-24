@@ -1,0 +1,17 @@
+<!--
+    File: mini_insta/base.html
+    Description: base template for the mini_insta application.
+    Author: William Fugate wfugate@bu.edu
+-->
+ {% load static %}
+ <html>
+    <head>
+        <title>Mini Instagram</title>
+        <link rel="stylesheet" href="{% static 'mini_insta/styles.css' %}">
+    </head>
+    <body>
+        <h1>Instagram</h1>
+        {% block content %}
+        {% endblock %}
+    </body>
+</html>
