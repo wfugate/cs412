@@ -1,0 +1,9 @@
+{% load static %}
+<html>
+<form action="{% url 'submit_page' %}" method="post">
+    {% csrf_token %}
+    <input type="text" name="ice_cream" placeholder="enter your favorite icecream:">
+
+    <input type="submit">
+</form>
+</html>
