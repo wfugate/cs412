@@ -6,9 +6,13 @@
         {% for profile in profiles %}
             <li>
                 {{ profile.username }}<br>
-                Display Name: {{ profile.display_name }}<br>
+                <a href="{% url 'show_profile' profile.pk %}">
+                    {{ profile.display_name }}
+                </a><br>
                 {% if profile.profile_image_url %}
-                    <img src="{{ profile.profile_image_url }}" alt="{{ profile.username }}'s profile image" width="100">
+                    <a href="{% url 'show_profile' profile.pk %}">
+                        <img src="{{ profile.profile_image_url }}" alt="{{ profile.username }}'s profile image" width="100">
+                    </a>
                 {% else %}
                     <em>No profile image</em>
                 {% endif %}
