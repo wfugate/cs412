@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.generic import ListView
 from .models import Profile
 from django.views.generic import DetailView
-# Create your views here.
+
 
 
 class ProfileListView(ListView):
