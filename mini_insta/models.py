@@ -1,3 +1,6 @@
+## mini_insta/models.py
+## Author: William Fugate
+## description: data models for mini_insta app
 from django.db import models
 
 # Create your models here.

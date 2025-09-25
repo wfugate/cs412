@@ -1,3 +1,6 @@
+## mini_insta/views.py
+## Author: William Fugate
+## description: views.py for mini_insta app
 from django.shortcuts import render
 from django.views.generic import ListView
 from .models import Profile

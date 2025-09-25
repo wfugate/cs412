@@ -8,14 +8,14 @@
 {% block content %}
     <h2>All Profiles</h2>
     <ul>
-        {% for profile in profiles %}
+        {% for profile in profiles %} <!--iterate through each profile and display its data-->
             <li>
                 {{ profile.username }}<br>
-                <a href="{% url 'show_profile' profile.pk %}">
+                <a href="{% url 'show_profile' profile.pk %}"> <!-- wrap display name in an a tag to link it to the specific profile-->
                     {{ profile.display_name }}
                 </a><br>
-                {% if profile.profile_image_url %}
-                    <a href="{% url 'show_profile' profile.pk %}">
+                {% if profile.profile_image_url %} <!-- make sure profile image url exists-->
+                    <a href="{% url 'show_profile' profile.pk %}"> <!-- wrap image in an a tag to link it to the specific profile-->
                         <img src="{{ profile.profile_image_url }}" alt="{{ profile.username }}'s profile image" width="100">
                     </a>
                 {% else %}
