@@ -3,26 +3,29 @@
     Description: base template for the mini_insta application.
     Author: William Fugate wfugate@bu.edu
 -->
- {% load static %}
- <html>
+
+{% load static %}
+
+<html>
     <head>
         <title>Mini Instagram</title>
         <link rel="stylesheet" href="{% static 'mini_insta/styles.css' %}">
     </head>
     <body>
-        <h1>Instagram</h1>
-        {% block content %}
-        {% endblock %}
+        <h1>Mini Instagram</h1>
+        
+        <div class="content-wrapper">
+            {% block content %}
+            {% endblock %}
+        </div>
 
-
-    <footer>
-    <nav>
-    <a href="{% url 'show_all_profiles' %}">All Profiles</a>
-    
-    {% if profile %} <!-- Check if 'profile' is in context and show the button to navigate to it if so-->
-        | <a href="{% url 'create_post' profile.pk %}">Create Post</a>
-    {% endif %}
-    </nav>
-    </footer>
+        <footer>
+            <nav>
+                <a href="{% url 'show_all_profiles' %}">All Profiles</a>
+                {% if profile %} <!-- Check if 'profile' is in context and show the button to navigate to it-->
+                | <a href="{% url 'create_post' profile.pk %}">Create Post</a>
+                {% endif %}
+            </nav>
+        </footer>
     </body>
 </html>

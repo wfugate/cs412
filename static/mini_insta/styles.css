@@ -1,46 +1,257 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #fafafa;
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Helvetica, Arial, sans-serif;
+    background-color: #f5f3ff;
+    color: #262626;
+    line-height: 1.6;
+    padding-bottom: 2.5rem;
+    min-height: 100vh;
+}
+
+.content-wrapper {
+    max-width: 80vw;
+    margin: 1.875rem auto;
+    padding: 0 1.25rem;
+}
+
+h1 {
+    background-color: #c184ff;
+    color: #fff;
+    padding: 0.5rem;
     text-align: center;
+    font-size: 1.25rem;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
-header {
-    background-color: #333;
-    color: white;
-    padding: 15px;
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.25rem;
 }
 
+h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-top: 1.875rem;
+    margin-bottom: 0.9375rem;
+}
 
-footer {
-    margin-top: 40px;
-    padding: 10px;
-    border-top: 1px solid #ccc;
-    font-size: 0.9em;
+.profile-header {
+    margin-bottom: 1.875rem;
+}
+
+.profile-top {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.profile-image {
+    flex-shrink: 0;
+}
+
+.profile-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.profile-info h2 {
+    margin-bottom: 0.5rem;
+}
+
+.profile-info p {
+    margin: 0.25rem 0;
+}
+
+.profile-stats {
+    margin-top: 1rem;
+    display: flex;
+    gap: 1.5rem;
+}
+
+.profile-stats p {
+    margin: 0;
+}
+
+.profile-bio {
+    border-top: 1px solid #dbdbdb;
+    padding-top: 1rem;
+}
+
+.profile-bio p {
+    margin: 0;
 }
 
 img {
-    border-radius: 5px;
-    margin: 10px 0;
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.5rem;
+    display: block;
+    object-fit: cover;
+}
+
+img[width="200"] {
+    border-radius: 50%;
+    border: 0.1875rem solid #dbdbdb;
+    margin: 1.25rem 0;
+    max-width: 12.5rem;
+    width: 12.5rem;
+    height: 12.5rem;
+}
+
+img[width="400"], img[width="500"] {
+    margin: 0.9375rem 0;
+    max-width: 100%;
+    width: 100%;
 }
 
 ul {
-    list-style-type: none;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15.625rem, 1fr));
+    gap: 1.25rem;
     padding: 0;
 }
 
 li {
-    text-decoration: none;
-    margin-bottom: 20px;
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
+    background-color: #fff;
+    border: 1px solid #dbdbdb;
+    border-radius: 0.5rem;
+    padding: 1.25rem;
+    text-align: center;
+}
+
+li img {
+    border-radius: 50%;
+    margin: 0.625rem auto;
+    border: 0.125rem solid #dbdbdb;
+    width: 6.25rem;
+    height: 6.25rem;
 }
 
 a {
+    color: #0095f6;
     text-decoration: none;
+    font-weight: 500;
 }
 
 a:hover {
     text-decoration: underline;
+}
+
+.post {
+    background-color: #fff;
+    border: 1px solid #dbdbdb;
+    border-radius: 0.5rem;
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+p {
+    margin: 0.625rem 0;
+}
+
+strong {
+    font-weight: 600;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #dbdbdb;
+    margin: 1.875rem 0;
+}
+
+form {
+    background-color: #fff;
+    border: 1px solid #dbdbdb;
+    border-radius: 0.5rem;
+    padding: 1.875rem;
+    max-width: 37.5rem;
+    margin: 0 auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table td {
+    padding: 0.75rem 0.5rem;
+    vertical-align: top;
+}
+
+table label {
+    font-weight: 600;
+}
+
+input[type="text"],
+input[type="url"],
+textarea,
+select {
+    width: 100%;
+    padding: 0.625rem;
+    border: 1px solid #dbdbdb;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    font-family: inherit;
+}
+
+button,
+input[type="submit"] {
+    background-color: #9233f1;
+    color: #fff;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.625rem 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+button:hover,
+input[type="submit"]:hover {
+    background-color: #9233f1;
+}
+
+footer {
+    background-color: #c184ff;
+    padding: 0.5rem 0.75rem;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100vw;
+    z-index: 100;
+}
+
+footer nav {
+    text-align: center;
+}
+
+footer nav a {
+    display: inline-block;
+    margin: 0 0.375rem;
+    padding: 0.375rem 1rem;
+    background-color: #9233f1;
+    color: #fff;
+    font-weight: 600;
+    border-radius: 0.375rem;
+    text-decoration: none;
+    font-size: 0.8125rem;
+}
+
+footer nav a:hover {
+    background-color: #8822ed;
+    text-decoration: none;
 }
