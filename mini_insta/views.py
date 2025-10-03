@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.views.generic import ListView
 from .models import Profile, Post, Photo
 from django.views.generic import DetailView, CreateView
+from django.urls import reverse
 
 
 
@@ -28,6 +29,10 @@ class CreatePostView(CreateView):
     model = Post
     template_name = 'mini_insta/create_post_form.html'
     fields = ['caption']
+
+    def get_success_url(self):
+        pk = self.kwargs['pk']
+        return reverse('show_profile', kwargs={'pk': pk})
 
     def get_context_data(self, **kwargs):
         '''Add the profile pk to the template context.'''
