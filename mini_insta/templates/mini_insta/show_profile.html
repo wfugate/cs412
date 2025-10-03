@@ -24,5 +24,23 @@
     <p>Following: (coming soon)</p>
 
     <h3>Posts</h3>
-    <p>(user posts will go here)</p>
+    {% for post in profile.get_all_posts %} <!--for each post, show it and its first photo-->
+        <div>
+            <p><strong>Posted on:</strong> {{ post.timestamp }}</p>
+            
+            {% with first_photo=post.get_all_photos.first %}
+                {% if first_photo %}
+                    <img src="{{ first_photo.image_url }}" alt="Post image" width="400">
+                {% else %}
+                    <img src="https://t4.ftcdn.net/jpg/04/70/29/97/360_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg" alt="No image available" width="400"> <!--placeholder image that says "no image"-->
+                {% endif %}
+            {% endwith %}
+            
+            {% if post.caption %}
+                <p><strong>Caption:</strong> {{ post.caption }}</p>
+            {% endif %}
+        </div>
+    {% empty %}
+        <p>No posts yet.</p>
+    {% endfor %}
 {% endblock %}

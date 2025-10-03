@@ -1,0 +1,30 @@
+<!--
+    File: mini_insta/create_post_form.html
+    Author: William Fugate wfugate@bu.edu
+    Description: template to display form for creating a new post.
+-->
+
+{% extends 'mini_insta/base.html' %}
+
+{% block content %}
+    <h2>Create New Post</h2>
+    
+    <form method="POST">
+        {% csrf_token %}
+        
+        <table>
+            {{ form.as_table }}
+            <tr>
+                <td><label for="image_url">Image URL:</label></td>
+                <td><input type="url" name="image_url" id="image_url" size="50"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button type="submit">Create Post</button>
+                    <a href="{% url 'show_profile' pk %}">Cancel</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+{% endblock %}

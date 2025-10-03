@@ -1,0 +1,33 @@
+<!--
+    File: mini_insta/show_post.html
+    Author: William Fugate wfugate@bu.edu
+    Description: template to display a single post with all its details.
+-->
+
+{% extends 'mini_insta/base.html' %}
+
+{% block content %}
+    <h2>Post by {{ post.profile.username }}</h2>
+    
+    <p><strong>Posted on:</strong> {{ post.timestamp }}</p>
+    
+    <h3>Photos</h3>
+    {% for photo in post.get_all_photos %} <!--iterate through each photo associated with the post-->
+        <p>
+            <img src="{{ photo.image_url }}" alt="Post photo" width="500">
+        </p>
+    {% empty %}
+        <p>No photos for this post.</p> <!--no photos-->
+    {% endfor %}
+    
+    <h3>Caption</h3>
+    {% if post.caption %} <!--check if caption exists and show if it does-->
+        <p>{{ post.caption }}</p>
+    {% else %}
+        <p>No caption.</p>
+    {% endif %}
+    
+    <hr>
+    
+    <p><a href="{% url 'show_profile' post.profile.pk %}">Back to {{ post.profile.username }}'s profile</a></p> <!--link back to the profile of the post's owner-->
+{% endblock %}
