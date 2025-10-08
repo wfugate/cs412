@@ -10,3 +10,6 @@ class CreatePostForm(forms.ModelForm):
         model = Post
         fields = ['caption']
 
+
+
+

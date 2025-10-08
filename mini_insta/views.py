@@ -46,9 +46,9 @@ class CreatePostView(CreateView):
         form.instance.profile = profile
         response = super().form_valid(form)
         
-        image_url = self.request.POST.get('image_url')
-        if image_url:
-            photo = Photo(post=self.object, image_url=image_url)
+        images = self.request.FILES.getlist('image_file')
+        for image in images:
+            photo = Photo(post=self.object, image_file = image)
             photo.save()
         
         return response

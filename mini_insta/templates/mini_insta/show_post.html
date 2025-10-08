@@ -12,9 +12,10 @@
     <p><strong>Posted on:</strong> {{ post.timestamp }}</p>
     
     <h3>Photos</h3>
+    <p>Total photos: {{ post.get_all_photos|length }}</p>
     {% for photo in post.get_all_photos %} <!--iterate through each photo associated with the post-->
         <p>
-            <img src="{{ photo.image_url }}" alt="Post photo" width="500">
+            <img src="{{ photo.get_image_url }}" alt="Post photo" width="500">
         </p>
     {% empty %}
         <p>No photos for this post.</p> <!--no photos-->
