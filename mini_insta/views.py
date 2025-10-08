@@ -4,8 +4,9 @@
 from django.shortcuts import render
 from django.views.generic import ListView
 from .models import Profile, Post, Photo
-from django.views.generic import DetailView, CreateView
+from django.views.generic import DetailView, CreateView, UpdateView
 from django.urls import reverse
+from .forms import UpdateProfileForm
 
 
 
@@ -52,4 +53,9 @@ class CreatePostView(CreateView):
             photo.save()
         
         return response
+    
+class UpdateProfileView(UpdateView):
+    model = Profile
+    form_class = UpdateProfileForm
+    template_name = 'mini_insta/update_profile_form.html'
 

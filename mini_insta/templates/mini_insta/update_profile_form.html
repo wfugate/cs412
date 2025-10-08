@@ -1,0 +1,26 @@
+<!--
+    File: mini_insta/create_post_form.html
+    Author: William Fugate wfugate@bu.edu
+    Description: template to display form for creating a new post.
+-->
+
+{% extends 'mini_insta/base.html' %}
+
+{% block content %}
+    <h2>Update Profile for {{profile.display_name}}</h2>
+    
+    <form method="POST" action="{% url 'update_profile' profile.pk%}">
+        {% csrf_token %}
+        
+        <table>
+            {{ form.as_table }}
+            <tr>
+                <td></td>
+                <td>
+                    <button type="submit">Confirm Updates</button>
+                    <a href="{% url 'show_profile' profile.pk %}">Cancel</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+{% endblock %}

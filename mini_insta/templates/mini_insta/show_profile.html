@@ -28,11 +28,11 @@
                 </div>
             </div>
         </div>
-        
         <div class="profile-bio">
             <p><strong>Bio:</strong> {{ profile.bio_text }}</p>
         </div>
     </div>
+    <a href="{% url 'update_profile' profile.pk %}" class="btn">Update Profile</a>
 
     <h3>Posts</h3>
     {% for post in profile.get_all_posts %}
