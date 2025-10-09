@@ -22,7 +22,7 @@
         <footer>
             <nav>
                 <a href="{% url 'show_all_profiles' %}">All Profiles</a>
-                {% if profile %} <!-- Check if 'profile' is in context and show the button to navigate to it-->
+                {% if profile %} <!-- check if 'profile' is in context and show the button to navigate to it-->
                 | <a href="{% url 'create_post' profile.pk %}">Create Post</a>
                 {% endif %}
             </nav>

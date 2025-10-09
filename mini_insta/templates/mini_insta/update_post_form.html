@@ -1,0 +1,31 @@
+<!--
+    File: mini_insta/update_post_form.html
+    Author: William Fugate wfugate@bu.edu
+    Description: template to update a post.
+-->
+
+{% extends 'mini_insta/base.html' %}
+
+{% block content %}
+    <h2>Update Post</h2>
+    
+    <div class="post">
+        <p><strong>Posted on:</strong> {{ post.timestamp }}</p>
+        
+        {% with first_photo=post.get_all_photos|first %}
+            <img src="{{ first_photo.get_image_url }}" alt="Post image" width="400">
+        {% endwith %}
+        
+        <p><strong>Current Caption:</strong> {{ post.caption }}</p>
+    </div>
+    
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Update Post</button>
+    </form>
+    
+    <form action="{% url 'show_profile' profile.pk %}" method="GET">
+        <button type="submit">Cancel</button>
+    </form>
+{% endblock %}

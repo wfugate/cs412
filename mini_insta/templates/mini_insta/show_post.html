@@ -27,6 +27,9 @@
     {% else %}
         <p>No caption.</p>
     {% endif %}
+
+    <a href="{% url 'delete_post' post.pk %}" class="btn">Delete this Post</a>
+    <a href="{% url 'update_post' post.pk %}" class="btn">Update this Post</a>
     
     <hr>
     
