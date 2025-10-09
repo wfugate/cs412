@@ -46,7 +46,7 @@ class Photo(models.Model):
     '''Model representing a photo associated with a post in the mini insta application.'''
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     image_url = models.URLField(blank=True)
-    image_file = models.FileField(blank=True)
+    image_file = models.ImageField(blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
