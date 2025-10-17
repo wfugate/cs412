@@ -1,0 +1,43 @@
+<!--
+    File: mini_insta/search_results.html
+    Description: template to display search results.
+    Author: William Fugate wfugate@bu.edu
+-->
+
+{% extends 'mini_insta/base.html' %}
+
+{% block content %}
+    <h2>Search Results for "{{ query }}"</h2>
+    
+    <a href="{% url 'search' profile.pk %}">New Search</a> <!--link to perform a new search-->
+    
+    <h3>Profiles</h3>
+    {% for result_profile in profiles %} <!--iterate through each matching profile-->
+        {% if result_profile.profile_image_url %} 
+            <img src="{{ result_profile.profile_image_url }}" alt="{{ result_profile.username }}" width="100"> <!--display profile image if available-->
+        {% endif %}
+        <p><a href="{% url 'show_profile' result_profile.pk %}">{{ result_profile.display_name }}</a></p> <!--profile name-->
+        <p>@{{ result_profile.username }}</p>
+    {% empty %} <!-- we didn't find any profiles-->
+        <p>No profiles found.</p>
+    {% endfor %}
+    
+    <h3>Posts</h3>
+    {% for post in posts %} <!--iterate through each matching post-->
+        <p><a href="{% url 'show_profile' post.profile.pk %}">{{ post.profile.display_name }}</a> - {{ post.timestamp }}</p>
+        
+        <a href="{% url 'show_post' post.pk %}">
+            {% with first_photo=post.get_all_photos|first %} <!--get the first photo of the post-->
+                {% if first_photo %}
+                    <img src="{{ first_photo.get_image_url }}" alt="Post image" width="300">
+                {% endif %}
+            {% endwith %}
+        </a>
+        
+        {% if post.caption %}
+            <p>{{ post.caption }}</p>
+        {% endif %}
+    {% empty %} <!-- we didn't find any posts-->
+        <p>No posts found.</p>
+    {% endfor %}
+{% endblock %}

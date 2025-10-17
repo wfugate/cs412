@@ -1,0 +1,26 @@
+{% extends 'mini_insta/base.html' %}
+
+{% block content %}
+    <h2>{{ profile.display_name }}'s Feed</h2>
+    {% for post in profile.get_post_feed %}
+        <div class="post">
+            <p><strong>Posted by {{post.profile}} on:</strong> {{ post.timestamp }}</p>
+            
+            <a href="{% url 'show_post' pk=post.pk %}">
+            {% with first_photo=post.get_all_photos|first %}
+                {% if first_photo %}
+                    <img src="{{ first_photo.get_image_url }}" alt="Post image" width="400">
+                {% else %}
+                    <img src="https://t4.ftcdn.net/jpg/04/70/29/97/360_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg" alt="No image available" width="400">
+                {% endif %}
+            {% endwith %}
+            </a>
+            
+            {% if post.caption %}
+                <p><strong>Caption:</strong> {{ post.caption }}</p>
+            {% endif %}
+        </div>
+    {% empty %}
+        <p>No posts yet.</p>
+    {% endfor %}
+{% endblock %}

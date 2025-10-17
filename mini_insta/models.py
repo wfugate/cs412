@@ -41,6 +41,13 @@ class Profile(models.Model):
         '''Returns the number of profiles this profile is following.'''
         return len(self.get_following())
 
+    def get_post_feed(self):
+        '''Returns a feed of posts from profiles this profile is following.'''
+        following = self.get_following()
+        feed_posts = Post.objects.filter(profile__in=[f.profile for f in following]).order_by('-timestamp') #filter posts by profiles being followed
+        return feed_posts
+    
+
 class Post(models.Model):
     '''Model representing a post made by a user in the mini insta application.'''
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)

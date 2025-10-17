@@ -47,10 +47,10 @@ class CreatePostView(CreateView):
     def form_valid(self, form):
         '''Set the profile for the post before saving and create associated photo.'''
         profile = Profile.objects.get(pk=self.kwargs['pk'])
-        form.instance.profile = profile
+        form.instance.profile = profile #adding profile to the form instance to be saved
         response = super().form_valid(form)
         
-        images = self.request.FILES.getlist('image_file')
+        images = self.request.FILES.getlist('image_file') #get the list of uploaded images
         for image in images:
             photo = Photo(post=self.object, image_file = image)
             photo.save()
@@ -71,9 +71,9 @@ class DeletePostView(DeleteView):
     
     def get_context_data(self, **kwargs):
         '''Add post and profile to the template context.'''
-        context = super().get_context_data(**kwargs)
-        context['post'] = self.object
-        context['profile'] = self.object.profile
+        context = super().get_context_data(**kwargs) #get the default context data
+        context['post'] = self.object #add the post being deleted to the context
+        context['profile'] = self.object.profile #add the profile owning the post to the context
         return context
     
     def get_success_url(self):
@@ -88,9 +88,9 @@ class UpdatePostView(UpdateView):
 
     def get_context_data(self, **kwargs):
         '''Add post and profile to the template context.'''
-        context = super().get_context_data(**kwargs)
-        context['post'] = self.object
-        context['profile'] = self.object.profile
+        context = super().get_context_data(**kwargs) #get the default context data
+        context['post'] = self.object #add the post being updated to the context
+        context['profile'] = self.object.profile #add the profile owning the post to the context
         return context
     
     def get_success_url(self):
@@ -108,3 +108,74 @@ class ShowFollowingDetailView(DetailView):
     model = Profile
     template_name = 'mini_insta/show_following.html'
     context_object_name = 'profile'
+
+class PostFeedListView(ListView):
+    model = Post
+    template_name = 'mini_insta/show_feed.html'
+    context_object_name = 'posts'
+    ordering = ['-timestamp']
+
+    def get_queryset(self):
+        """Return the post feed for the profile with this pk."""
+        profile_pk = self.kwargs.get('pk')
+        profile = Profile.objects.get(pk=profile_pk) #filter by profile pk
+        return profile.get_post_feed()
+
+    def get_context_data(self, **kwargs):
+        """Add the profile to the template context."""
+        context = super().get_context_data(**kwargs)
+        profile_pk = self.kwargs.get('pk')
+        context['profile'] = Profile.objects.get(pk=profile_pk) #add the profile to the context
+        return context
+    
+class SearchView(ListView):
+    '''View to search profiles and posts.'''
+    template_name = 'mini_insta/search_results.html'
+    context_object_name = 'posts'
+
+    def dispatch(self, request, *args, **kwargs):
+        '''Check if query is present, if not show search form.'''
+        if 'query' not in self.request.GET: #show the search form if no query
+            profile_pk = self.kwargs.get('pk')
+            profile = Profile.objects.get(pk=profile_pk) #get the profile by pk
+            return render(request, 'mini_insta/search.html', {'profile': profile})
+        else:
+            return super().dispatch(request, *args, **kwargs) #continue with ListView processing if there is a query
+
+    def get_queryset(self):
+        '''Return posts matching the search query.'''
+        query = self.request.GET.get('query', '') #get the search query
+        if query:
+            return Post.objects.filter(caption__icontains=query).order_by('-timestamp') #if theres a search query, filter posts by caption
+        return Post.objects.none()
+
+    def get_context_data(self, **kwargs):
+        '''Add profile, query, posts, and matching profiles to context.'''
+        context = super().get_context_data(**kwargs)
+        
+        #get the profile
+        profile_pk = self.kwargs.get('pk')
+        profile = Profile.objects.get(pk=profile_pk)
+        context['profile'] = profile
+        
+        #get the query
+        query = self.request.GET.get('query', '')
+        context['query'] = query
+        
+        #get matching posts (already in context as 'posts' from get_queryset)
+        context['posts'] = self.get_queryset()
+        
+        #get matching profiles
+        if query:
+            #combine results from all three fields
+            username_matches = Profile.objects.filter(username__icontains=query)
+            display_name_matches = Profile.objects.filter(display_name__icontains=query)
+            bio_matches = Profile.objects.filter(bio_text__icontains=query)
+            
+            #union of all matches (also remove duplicates with distinct())
+            profiles = (username_matches | display_name_matches | bio_matches).distinct()
+            context['profiles'] = profiles
+        else:
+            context['profiles'] = Profile.objects.none()
+        
+        return context
