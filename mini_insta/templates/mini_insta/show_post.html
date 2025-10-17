@@ -28,6 +28,21 @@
         <p>No caption.</p>
     {% endif %}
 
+    <p><strong>Likes:</strong> {{ post.get_likes|length }}</p>
+
+    <h3>Comments</h3>
+    {% if post.get_all_comments %}
+        <ul>
+            {% for comment in post.get_all_comments %}
+                <li>
+                    <p><strong>{{ comment.profile.display_name }}:</strong> {{ comment.text }} <em>on {{ comment.timestamp }}</em></p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No comments yet.</p>
+    {% endif %}
+
     <a href="{% url 'delete_post' post.pk %}" class="btn">Delete this Post</a>
     <a href="{% url 'update_post' post.pk %}" class="btn">Update this Post</a>
     

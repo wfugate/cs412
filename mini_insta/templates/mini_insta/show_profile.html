@@ -23,8 +23,8 @@
                 <p><strong>Joined:</strong> {{ profile.join_date }}</p>
                 
                 <div class="profile-stats">
-                    <p>Followers: (coming soon)</p>
-                    <p>Following: (coming soon)</p>
+                    <p>Followers: <a href="{% url 'show_followers' profile.pk %}">{{profile.get_num_followers}}</a></p>
+                    <p>Following: <a href="{% url 'show_following' profile.pk %}">{{profile.get_num_following}}</a></p>
                 </div>
             </div>
         </div>
