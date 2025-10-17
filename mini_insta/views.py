@@ -110,7 +110,6 @@ class ShowFollowingDetailView(DetailView):
     context_object_name = 'profile'
 
 class PostFeedListView(ListView):
-    model = Post
     template_name = 'mini_insta/show_feed.html'
     context_object_name = 'posts'
     ordering = ['-timestamp']
@@ -161,9 +160,6 @@ class SearchView(ListView):
         #get the query
         query = self.request.GET.get('query', '')
         context['query'] = query
-        
-        #get matching posts (already in context as 'posts' from get_queryset)
-        context['posts'] = self.get_queryset()
         
         #get matching profiles
         if query:
