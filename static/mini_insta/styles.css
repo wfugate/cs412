@@ -272,3 +272,17 @@ footer nav a:hover {
     background-color: #8822ed;
     text-decoration: none;
 }
+
+.logout-link {
+    background: none;
+    border: none;
+    color: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+    font: inherit;
+}
+
+.logout-link:hover {
+    color: #0066cc;
+}

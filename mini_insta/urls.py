@@ -7,7 +7,7 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('', ProfileListView.as_view(), name='show_all_profiles'), #default route shows all profiles
-    path('profile/', ProfileDetailView.as_view(), name='show_profile'), #route to show a specific profile by primary key
+    path('profile/<int:pk>/', ProfileDetailView.as_view(), name='show_profile'), #route to show a specific profile by primary key
     path('post/<int:pk>/', PostDetailView.as_view(), name='show_post'), #route to show a specific post by primary key
     path('profile/create_post', CreatePostView.as_view(), name='create_post'), #route to create a new post
     path('profile/update', UpdateProfileView.as_view(), name="update_profile"), #route to update a profile
@@ -18,6 +18,7 @@ urlpatterns = [
     path('profile/feed', PostFeedListView.as_view(), name='show_feed'), #route to show post feed of a profile
     path('profile/search', SearchView.as_view(), name='search'), #route to search for profiles and posts
     path('login/', auth_views.LoginView.as_view(template_name='mini_insta/login.html'), name='login'), ## NEW
-	path('logout/', auth_views.LogoutView.as_view(next_page='show_all'), name='logout'), ## NEW
+	path('logout/', auth_views.LogoutView.as_view(next_page='logged_out'), name='logout'), ## NEW
+    path('logged_out/', LoggedOutView.as_view(), name='logged_out'), ## NEW
 ]
 

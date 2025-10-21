@@ -32,8 +32,8 @@
             <p><strong>Bio:</strong> {{ profile.bio_text }}</p>
         </div>
     </div>
-    {% if user.is_authenticated %}
-    <a href="{% url 'update_profile' profile.pk %}" class="btn">Update Profile</a>
+    {% if is_owner %}
+    <a href="{% url 'update_profile' %}" class="btn">Update Profile</a>
     {% endif %}
 
     <h3>Posts</h3>

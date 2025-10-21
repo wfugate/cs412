@@ -13,6 +13,20 @@
     </head>
     <body>
         <h1>Mini Instagram</h1>
+
+        <div class="auth-status">
+        {% if user.is_authenticated %}
+            <p>Logged in as: <strong>{{ user.username }}</strong> | 
+                <form method="POST" action="{% url 'logout' %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="logout-link">Logout</button>
+                </form>
+            </p>
+        {% else %}
+            <p><a href="{% url 'login' %}">Login</a></p>
+        {% endif %}
+        </div>
+
         
         <div class="content-wrapper">
             {% block content %}
@@ -20,20 +34,18 @@
         </div>
 
         <footer>
-            <nav> <!-- navigation links -->
-                {% if user.is_authenticated %} <!-- check if 'user' is in context and authenticated-->
-                    <a href="{% url 'create_post' user.profile.pk %}">Create Post</a>
-                    <a href="{% url 'show_feed' user.profile.pk %}">View Feed</a>
-                    <a href="{% url 'show_profile' user.profile.pk %}">My Profile</a>
-                    <a href="{% url 'search' user.profile.pk %}">Search</a>
-                {% else %}
-                    <a href="{% url 'show_all_profiles' %}">View Profiles</a>
-                {% endif %}
-
+            <nav>
+                <a href="{% url 'show_all_profiles' %}">View All Profiles</a>
+                
                 {% if user.is_authenticated %}
-                Logged in as: {{ user.username }}
+                    {% if profile %}
+                        <a href="{% url 'show_profile' profile.pk %}">My Profile</a>
+                        <a href="{% url 'create_post' %}">Create Post</a>
+                        <a href="{% url 'show_feed' %}">View Feed</a>
+                        <a href="{% url 'search' %}">Search</a>
+                    {% endif %}
                 {% else %}
-                Not Logged in.
+                    <a href="{% url 'login' %}">Login</a>
                 {% endif %}
             </nav>
         </footer>

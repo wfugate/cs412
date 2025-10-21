@@ -43,7 +43,7 @@
         <p>No comments yet.</p>
     {% endif %}
 
-    {% if user.is_authenticated %}
+    {% if is_owner %}
     <a href="{% url 'delete_post' post.pk %}" class="btn">Delete this Post</a>
     <a href="{% url 'update_post' post.pk %}" class="btn">Update this Post</a>
     {% endif %}

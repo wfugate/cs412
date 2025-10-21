@@ -1,0 +1,16 @@
+<!--
+    File: mini_insta/logged_out.html
+    Description: Logout confirmation page
+    Author: William Fugate wfugate@bu.edu
+-->
+
+{% extends 'mini_insta/base.html' %}
+
+{% block content %}
+    <h2>Logged Out</h2>
+    
+    <p>You have been logged out.</p>
+    
+    <p><a href="{% url 'login' %}">Log in</a></p>
+    <p><a href="{% url 'show_all_profiles' %}">View all profiles</a></p>
+{% endblock %}
