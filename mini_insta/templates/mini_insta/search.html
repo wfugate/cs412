@@ -7,6 +7,7 @@
 {% extends 'mini_insta/base.html' %}
 
 {% block content %}
+    {% if user.is_authenticated %}
     <h2>Search</h2>
     
     <form method="GET" action="{% url 'search' profile.pk %}">
@@ -14,4 +15,7 @@
         <input type="text" id="query" name="query" placeholder='Search something...'' required>
         <button type="submit">Search</button>
     </form>
+    {% else %}
+        <p>You must be logged in to use the search feature.</p>
+    {% endif %}
 {% endblock %}

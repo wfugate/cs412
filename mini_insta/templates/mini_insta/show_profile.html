@@ -32,7 +32,9 @@
             <p><strong>Bio:</strong> {{ profile.bio_text }}</p>
         </div>
     </div>
+    {% if user.is_authenticated %}
     <a href="{% url 'update_profile' profile.pk %}" class="btn">Update Profile</a>
+    {% endif %}
 
     <h3>Posts</h3>
     {% for post in profile.get_all_posts %}

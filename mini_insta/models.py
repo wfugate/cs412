@@ -3,11 +3,13 @@
 ## description: data models for mini_insta app
 from django.db import models
 from django.urls import reverse
-
+from django.contrib.auth.models import User
 # Create your models here.
 
 class Profile(models.Model):
+    #PASStheTorrrCH1234$
     '''Model representing a user profile in the mini insta application.'''
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     username = models.CharField()
     display_name = models.TextField(blank=True)
     profile_image_url = models.URLField(blank=True)

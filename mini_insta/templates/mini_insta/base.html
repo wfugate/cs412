@@ -21,13 +21,19 @@
 
         <footer>
             <nav> <!-- navigation links -->
-                {% if profile %} <!-- check if 'profile' is in context and show the button to navigate to it-->
-                    <a href="{% url 'create_post' profile.pk %}">Create Post</a>
-                    <a href="{% url 'show_feed' profile.pk %}">View Feed</a>
-                    <a href="{% url 'show_profile' profile.pk %}">My Profile</a>
-                    <a href="{% url 'search' profile.pk %}">Search</a>
+                {% if user.is_authenticated %} <!-- check if 'user' is in context and authenticated-->
+                    <a href="{% url 'create_post' user.profile.pk %}">Create Post</a>
+                    <a href="{% url 'show_feed' user.profile.pk %}">View Feed</a>
+                    <a href="{% url 'show_profile' user.profile.pk %}">My Profile</a>
+                    <a href="{% url 'search' user.profile.pk %}">Search</a>
                 {% else %}
                     <a href="{% url 'show_all_profiles' %}">View Profiles</a>
+                {% endif %}
+
+                {% if user.is_authenticated %}
+                Logged in as: {{ user.username }}
+                {% else %}
+                Not Logged in.
                 {% endif %}
             </nav>
         </footer>

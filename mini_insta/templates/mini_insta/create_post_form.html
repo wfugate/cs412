@@ -7,6 +7,7 @@
 {% extends 'mini_insta/base.html' %}
 
 {% block content %}
+    {% if user.is_authenticated %}
     <h2>Create New Post</h2>
     
     <form method="POST" enctype="multipart/form-data">
@@ -27,4 +28,7 @@
             </tr>
         </table>
     </form>
+    {% else %}
+        <p>You must be logged in to create a post.</p>
+    {% endif %}
 {% endblock %}

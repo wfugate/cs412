@@ -7,8 +7,13 @@ from .models import Profile, Post, Photo
 from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse
 from .forms import UpdateProfileForm, UpdatePostForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-
+class ProfileRequiredMixin(LoginRequiredMixin):
+    '''Mixin to ensure the user is logged in to access profile-related views.'''
+    def get_profile(self):
+        '''Get the profile associated with the logged-in user.'''
+        return Profile.objects.get(user=self.request.user)
 
 class ProfileListView(ListView):
     '''View to see all profiles.'''
@@ -29,7 +34,7 @@ class PostDetailView(DetailView):
     template_name = 'mini_insta/show_post.html'
     context_object_name = 'post'
 
-class CreatePostView(CreateView):
+class CreatePostView(ProfileRequiredMixin, CreateView):
     model = Post
     template_name = 'mini_insta/create_post_form.html'
     fields = ['caption']
@@ -57,14 +62,14 @@ class CreatePostView(CreateView):
         
         return response
     
-class UpdateProfileView(UpdateView):
+class UpdateProfileView(ProfileRequiredMixin, UpdateView):
     '''View to update a post.'''
     model = Profile
     form_class = UpdateProfileForm
     template_name = 'mini_insta/update_profile_form.html'
 
 
-class DeletePostView(DeleteView):
+class DeletePostView(ProfileRequiredMixin, DeleteView):
     '''View to delete a post.'''
     model = Post
     template_name = 'mini_insta/delete_post_form.html'
@@ -80,7 +85,7 @@ class DeletePostView(DeleteView):
         '''Redirect to the profile page after deleting the post.'''
         return reverse('show_profile', kwargs={'pk': self.object.profile.pk})
     
-class UpdatePostView(UpdateView):
+class UpdatePostView(ProfileRequiredMixin, UpdateView):
     '''View to update a post'''
     model = Post
     form_class = UpdatePostForm
@@ -109,7 +114,7 @@ class ShowFollowingDetailView(DetailView):
     template_name = 'mini_insta/show_following.html'
     context_object_name = 'profile'
 
-class PostFeedListView(ListView):
+class PostFeedListView(ProfileRequiredMixin, ListView):
     template_name = 'mini_insta/show_feed.html'
     context_object_name = 'posts'
     ordering = ['-timestamp']
@@ -127,7 +132,7 @@ class PostFeedListView(ListView):
         context['profile'] = Profile.objects.get(pk=profile_pk) #add the profile to the context
         return context
     
-class SearchView(ListView):
+class SearchView(ProfileRequiredMixin, ListView):
     '''View to search profiles and posts.'''
     template_name = 'mini_insta/search_results.html'
     context_object_name = 'posts'
