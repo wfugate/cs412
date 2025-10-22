@@ -8,8 +8,10 @@ from django.contrib.auth.models import User
 
 class Profile(models.Model):
     #PASStheTorrrCH1234$
+    #jCVq84mj^9]!
     '''Model representing a user profile in the mini insta application.'''
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile') #I chose OneToOneField because through research I found it 
+                                                                                        #allows direct access to the profile via user.profile in templates.
     username = models.CharField()
     display_name = models.TextField(blank=True)
     profile_image_url = models.URLField(blank=True)

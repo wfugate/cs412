@@ -7,7 +7,7 @@
 {% extends 'mini_insta/base.html' %}
 
 {% block content %}
-    {% if user.is_authenticated %}
+    {% if user.is_authenticated %} <!--added check to protect page from unauthorized users-->
     <h2>Search</h2>
     
     <form method="GET" action="{% url 'search' %}">

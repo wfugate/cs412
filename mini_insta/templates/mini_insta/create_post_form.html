@@ -7,7 +7,7 @@
 {% extends 'mini_insta/base.html' %}
 
 {% block content %}
-    {% if user.is_authenticated %}
+    {% if user.is_authenticated %} <!--added check to protect page from unauthorized users-->
     <h2>Create New Post</h2>
     
     <form method="POST" enctype="multipart/form-data">

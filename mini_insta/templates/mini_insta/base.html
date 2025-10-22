@@ -15,21 +15,21 @@
         <h1>Mini Instagram</h1>
 
         <div class="auth-status">
-        {% if user.is_authenticated %}
-            <p>Logged in as: <strong>{{ user.username }}</strong> | 
-                <form method="POST" action="{% url 'logout' %}" style="display: inline;">
+            {% if user.is_authenticated %} <!--check if the user is authenticated and if so show the username-->
+                <span>Logged in as: <strong>{{ user.username }}</strong></span>
+                <form method="POST" action="{% url 'logout' %}" class="logout-form">
                     {% csrf_token %}
-                    <button type="submit" class="logout-link">Logout</button>
+                    <button type="submit" class="logout-link">Logout</button> <!--logout button-->
                 </form>
-            </p>
-        {% else %}
-            <p><a href="{% url 'login' %}">Login</a></p>
-        {% endif %}
+            {% else %} <!--if not authenticated show login link-->
+                <a href="{% url 'login' %}">Login</a>
+            {% endif %}
         </div>
 
         
         <div class="content-wrapper">
             {% block content %}
+            <!--app goes here-->
             {% endblock %}
         </div>
 
@@ -37,13 +37,15 @@
             <nav>
                 <a href="{% url 'show_all_profiles' %}">View All Profiles</a>
                 
-                {% if user.is_authenticated %}
-                    {% if profile %}
-                        <a href="{% url 'show_profile' profile.pk %}">My Profile</a>
-                        <a href="{% url 'create_post' %}">Create Post</a>
-                        <a href="{% url 'show_feed' %}">View Feed</a>
-                        <a href="{% url 'search' %}">Search</a>
-                    {% endif %}
+                {% if user.is_authenticated %} <!--show additional links if the user is logged in-->
+                    {% with user.profile as my_profile %}
+                        {% if my_profile %}
+                            <a href="{% url 'show_profile' my_profile.pk %}">My Profile</a>
+                        {% endif %}
+                    {% endwith %}
+                    <a href="{% url 'create_post' %}">Create Post</a>
+                    <a href="{% url 'show_feed' %}">View Feed</a>
+                    <a href="{% url 'search' %}">Search</a>
                 {% else %}
                     <a href="{% url 'login' %}">Login</a>
                 {% endif %}

@@ -1,7 +1,12 @@
+<!--
+    File: mini_insta/show_feed.html
+    Description: template to display feed.
+    Author: William Fugate wfugate@bu.edu
+-->
 {% extends 'mini_insta/base.html' %}
 
 {% block content %}
-    {% if user.is_authenticated %}
+    {% if user.is_authenticated %} <!--added check to protect page from unauthorized users-->
     <h2>{{ profile.display_name }}'s Feed</h2>
     {% for post in posts %}
         <div class="post">
@@ -24,7 +29,7 @@
     {% empty %}
         <p>No posts yet.</p>
     {% endfor %}
-    {% else %}
+    {% else %} <!-- not logged in-->
         <p>You must be logged in to view your feed.</p>
     {% endif %}
 {% endblock %}

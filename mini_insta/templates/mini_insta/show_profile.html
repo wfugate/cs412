@@ -32,7 +32,7 @@
             <p><strong>Bio:</strong> {{ profile.bio_text }}</p>
         </div>
     </div>
-    {% if is_owner %}
+    {% if is_owner %} <!-- added is_owner boolean to view to see if this is our profile-->
     <a href="{% url 'update_profile' %}" class="btn">Update Profile</a>
     {% endif %}
 

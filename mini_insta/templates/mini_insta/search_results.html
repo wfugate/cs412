@@ -7,9 +7,10 @@
 {% extends 'mini_insta/base.html' %}
 
 {% block content %}
+    {% if user.is_authenticated %} <!--added check to protect page from unauthorized users-->
     <h2>Search Results for "{{ query }}"</h2>
     
-    <a href="{% url 'search' profile.pk %}">New Search</a> <!--link to perform a new search-->
+    <a href="{% url 'search' %}">New Search</a> <!--link to perform a new search-->
     
     <h3>Profiles</h3>
     {% for result_profile in profiles %} <!--iterate through each matching profile-->
@@ -40,4 +41,7 @@
     {% empty %} <!-- we didn't find any posts-->
         <p>No posts found.</p>
     {% endfor %}
+    {% else %}
+        <p>You must be logged in to view search results.</p>
+    {% endif %}
 {% endblock %}

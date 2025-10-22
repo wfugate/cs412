@@ -13,7 +13,7 @@ class ProfileRequiredMixin(LoginRequiredMixin):
     '''Mixin to ensure the user is logged in to access profile-related views.'''
     def get_profile(self):
         '''Get the profile associated with the logged-in user.'''
-        return Profile.objects.get(user=self.request.user)
+        return self.request.user.profile
     
     def get_login_url(self):
         '''Return the login URL.'''

@@ -273,16 +273,32 @@ footer nav a:hover {
     text-decoration: none;
 }
 
-.logout-link {
-    background: none;
-    border: none;
-    color: inherit;
-    text-decoration: underline;
-    cursor: pointer;
-    padding: 0;
-    font: inherit;
+/* Authentication status bar */
+.auth-status {
+    background-color: #dbbdfc;
+    padding: 0.15rem 1.25rem;
+    border-bottom: 1px solid #c184ff;
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    font-size: 0.75rem;
 }
 
+
+
+.auth-status strong {
+    color: #262626;
+    font-weight: 600;
+}
+
+
 .logout-link:hover {
-    color: #0066cc;
+    background-color: #8822ed;
+    text-decoration: none;
+}
+
+.logout-form {
+    display: inline;
+    margin: 0;
+    padding: 0;
 }
