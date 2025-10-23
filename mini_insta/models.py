@@ -125,3 +125,21 @@ class Like(models.Model):
     
 
     
+class Follow(models.Model):
+    '''Model representing a follow relationship between two profiles in the mini insta application.'''
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='propfile')
+    follower_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='follower_profile')
+    timestamp = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.follower_profile.display_name} follows {self.profile.display_name}"
+    
+class Like(models.Model):
+    '''Model representing a like made on a post in the mini insta application.'''
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Like by {self.profile.display_name} on {self.post}"
+    

@@ -111,8 +111,8 @@ img[width="200"] {
 
 img[width="400"], img[width="500"] {
     margin: 0.93rem 0;
-    max-width: 100%;
-    width: 100%;
+    max-width: 60%;
+    width: 60%;
 }
 
 ul {
@@ -273,7 +273,6 @@ footer nav a:hover {
     text-decoration: none;
 }
 
-/* Authentication status bar */
 .auth-status {
     background-color: #dbbdfc;
     padding: 0.15rem 1.25rem;
@@ -283,8 +282,6 @@ footer nav a:hover {
     gap: 0.625rem;
     font-size: 0.75rem;
 }
-
-
 
 .auth-status strong {
     color: #262626;
@@ -301,4 +298,7 @@ footer nav a:hover {
     display: inline;
     margin: 0;
     padding: 0;
+}
+.helptext {
+    display: none;
 }

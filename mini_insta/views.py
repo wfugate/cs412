@@ -3,11 +3,15 @@
 ## description: views.py for mini_insta app
 from django.shortcuts import render
 from django.views.generic import ListView
-from .models import Profile, Post, Photo
+from .models import Profile, Post, Photo, Like, Follow, Comment
 from django.views.generic import DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from django.urls import reverse
-from .forms import UpdateProfileForm, UpdatePostForm
+from .forms import UpdateProfileForm, UpdatePostForm, CreateProfileForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
+from django.shortcuts import redirect
+
 
 class ProfileRequiredMixin(LoginRequiredMixin):
     '''Mixin to ensure the user is logged in to access profile-related views.'''
@@ -38,8 +42,13 @@ class ProfileDetailView(DetailView):
         if self.request.user.is_authenticated:
             user_profile = Profile.objects.get(user=self.request.user)
             context['is_owner'] = (user_profile == profile)
+            context['is_following'] = Follow.objects.filter(
+                follower_profile=user_profile,
+                profile=profile
+            ).exists()
         else:
             context['is_owner'] = False
+            context['is_following'] = False
         return context
 
 
@@ -56,8 +65,14 @@ class PostDetailView(DetailView):
         if self.request.user.is_authenticated:
             user_profile = Profile.objects.get(user=self.request.user)
             context['is_owner'] = (user_profile == post.profile)
+
+            context['has_liked'] = Like.objects.filter(
+                profile=user_profile,
+                post=post
+            ).exists()
         else:
             context['is_owner'] = False
+            context['has_liked'] = False
         return context
 class CreatePostView(ProfileRequiredMixin, CreateView):
     model = Post
@@ -150,10 +165,12 @@ class PostFeedListView(ProfileRequiredMixin, ListView):
     ordering = ['-timestamp']
 
     def get_queryset(self):
+        '''Return the post feed for the logged-in user's profile.'''
         profile = self.get_profile() #get the profile of the logged-in user
         return profile.get_post_feed()
 
     def get_context_data(self, **kwargs):
+        '''Add profile to the template context.'''
         context = super().get_context_data(**kwargs)
         context['profile'] = self.get_profile()  #add the profile to the context
         return context
@@ -208,3 +225,109 @@ class SearchView(ProfileRequiredMixin, ListView):
 class LoggedOutView(TemplateView):
     '''View to show logout confirmation.'''
     template_name = 'mini_insta/logged_out.html'
+
+class CreateProfileView(CreateView):
+    '''View to create a profile.'''
+    model = Profile
+    form_class = CreateProfileForm
+    template_name = 'mini_insta/create_profile_form.html'
+    
+    def get_context_data(self, **kwargs):
+        '''Add any additional context if needed.'''
+        context = super().get_context_data(**kwargs)
+        context['user_form'] = UserCreationForm()  #add a user creation form to the context
+        return context
+    def form_valid(self, form):
+        '''Create the associated User object before saving the Profile.'''
+        signup_form = UserCreationForm(self.request.POST)
+        if signup_form.is_valid(): #check if the user creation form is valid
+            user = signup_form.save()  #create the User object
+            login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')  #log in the new user
+            form.instance.user = user  #associate the User with the Profile
+            return super().form_valid(form)
+        else:
+            return self.form_invalid(form)
+        
+class FollowProfileView(ProfileRequiredMixin, TemplateView):
+    '''View to follow a profile.'''
+    template_name = 'mini_insta/show_profile.html'
+
+
+    def dispatch(self, request, *args, **kwargs):
+        '''Handle following the profile before rendering the template.'''
+        user_profile = self.get_profile()
+        profile_to_follow = Profile.objects.get(pk=kwargs['pk'])
+        #create a Follow relationship if it doesn't already exist
+        if user_profile != profile_to_follow:
+            #check if already following
+            existing_follow = Follow.objects.filter(
+                follower_profile=user_profile,
+                profile=profile_to_follow
+            ).first()
+            
+            if not existing_follow:
+                #create the follow relationship
+                Follow.objects.create(
+                    follower_profile=user_profile,
+                    profile=profile_to_follow
+                )
+        return redirect('show_profile', pk=profile_to_follow.pk)
+    
+class DeleteFollowView(ProfileRequiredMixin, TemplateView):
+    '''View to unfollow a profile.'''
+    template_name = 'mini_insta/show_profile.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        '''Handle unfollowing the profile before rendering the template.'''
+        user_profile = self.get_profile()
+        profile_to_unfollow = Profile.objects.get(pk=kwargs['pk'])
+        
+        #delete the Follow relationship if it exists
+        Follow.objects.filter(
+            follower_profile=user_profile,
+            profile=profile_to_unfollow
+        ).delete()
+        
+        return redirect('show_profile', pk=profile_to_unfollow.pk)
+    
+class LikePostView(ProfileRequiredMixin, TemplateView):
+    '''View to like a post.'''
+    template_name = 'mini_insta/show_post.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        '''Handle liking the post before rendering the template.'''
+        user_profile = self.get_profile()
+        post_to_like = Post.objects.get(pk=kwargs['pk'])
+        
+        #create a Like relationship if it doesn't already exist
+        if user_profile != post_to_like.profile:
+            existing_like = Like.objects.filter(
+                profile=user_profile,
+                post=post_to_like
+            ).first()
+            
+            if not existing_like:
+                #create the like relationship
+                Like.objects.create(
+                    profile=user_profile,
+                    post=post_to_like
+                )
+        return redirect('show_post', pk=post_to_like.pk)
+
+class DeleteLikeView(ProfileRequiredMixin, TemplateView):
+    '''View to unlike a post.'''
+    template_name = 'mini_insta/show_post.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        '''Handle unliking the post before rendering the template.'''
+        user_profile = self.get_profile()
+        post_to_unlike = Post.objects.get(pk=kwargs['pk'])
+        
+        #delete the Like relationship if it exists
+        Like.objects.filter(
+            profile=user_profile,
+            post=post_to_unlike
+        ).delete()
+        
+        return redirect('show_post', pk=post_to_unlike.pk)
+    

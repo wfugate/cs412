@@ -32,6 +32,13 @@
             <p><strong>Bio:</strong> {{ profile.bio_text }}</p>
         </div>
     </div>
+    {% if user.is_authenticated and not is_owner %}
+    {% if is_following %}
+        <a href="{% url 'delete_follow' profile.pk %}" class="btn">Unfollow</a>
+    {% else %}
+        <a href="{% url 'follow_profile' profile.pk %}" class="btn">Follow</a>
+    {% endif %}
+    {% endif %}
     {% if is_owner %} <!-- added is_owner boolean to view to see if this is our profile-->
     <a href="{% url 'update_profile' %}" class="btn">Update Profile</a>
     {% endif %}
