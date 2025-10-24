@@ -13,8 +13,8 @@ urlpatterns = [
     path('profile/update', UpdateProfileView.as_view(), name="update_profile"), #route to update a profile
     path('post/<int:pk>/delete', DeletePostView.as_view(), name='delete_post'), #route to delete a post
     path('post/<int:pk>/update', UpdatePostView.as_view(), name='update_post'), #route to update a post
-    path('profile/<int:pk>/following', ShowFollowersDetailView.as_view(), name='show_followers'), #route to show followers of a profile
-    path('profile/<int:pk>/followers', ShowFollowingDetailView.as_view(), name='show_following'), #route to show following of a profile
+    path('profile/<int:pk>/followers', ShowFollowersDetailView.as_view(), name='show_followers'), #route to show followers of a profile
+    path('profile/<int:pk>/following', ShowFollowingDetailView.as_view(), name='show_following'), #route to show following of a profile
     path('profile/feed', PostFeedListView.as_view(), name='show_feed'), #route to show post feed of a profile
     path('profile/search', SearchView.as_view(), name='search'), #route to search for profiles and posts
     path('login/', auth_views.LoginView.as_view(template_name='mini_insta/login.html'), name='login'), #route to login page
