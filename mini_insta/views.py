@@ -112,6 +112,11 @@ class UpdateProfileView(ProfileRequiredMixin, UpdateView):
     def get_object(self):
         '''Return the profile of the logged-in user.'''
         return self.get_profile()
+    
+    def get_success_url(self):
+        '''Redirect to the profile page after updating.'''
+        return reverse('show_profile', kwargs={'pk': self.get_profile().pk})    
+    
 
 
 class DeletePostView(ProfileRequiredMixin, DeleteView):
