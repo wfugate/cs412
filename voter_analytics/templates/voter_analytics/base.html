@@ -1,0 +1,29 @@
+<!--
+    File: voter_analytics/base.html
+    Description: base template for the voter_analytics application.
+    Author: William Fugate wfugate@bu.edu
+-->
+
+{% load static %}
+
+<html>
+    <head>
+        <title>Newton Voters</title>
+        <link rel="stylesheet" href="{% static 'voter_analytics/styles.css' %}">
+    </head>
+    <body>
+        <h1>Newton Voters</h1>
+
+        <nav>
+            <a class="buttons" href="{% url 'voters' %}">Voter List</a>
+            <a class="buttons" href="{% url 'graphs' %}">Analytics Graphs</a>
+        </nav>
+        
+        <div class="content-wrapper">
+            {% block content %}
+            <!--app goes here-->
+            {% endblock %}
+        </div>
+
+    </body>
+</html>

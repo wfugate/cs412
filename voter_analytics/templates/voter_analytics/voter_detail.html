@@ -1,0 +1,34 @@
+<!--
+    File: voter_analytics/voter_detail.html
+    Description: see the details of a specific voter in the voter_analytics application.
+    Author: William Fugate wfugate@bu.edu
+-->
+{% extends "voter_analytics/base.html" %}
+
+{% block content %}
+    <h2>Voter Details</h2>
+    
+    <p><strong>Name:</strong> {{ voter.first_name }} {{ voter.last_name }}</p>
+    <p><strong>Address:</strong> {{ voter.residence_address_street_number }} {{ voter.residence_address_street_name }}</p>
+    <p><strong>Apartment:</strong> {{ voter.residence_address_apt_number }}</p>
+    <p><strong>ZIP Code:</strong> {{ voter.residence_address_zip }}</p>
+    <p><strong>Date of Birth:</strong> {{ voter.date_of_birth }}</p>
+    <p><strong>Date of Registration:</strong> {{ voter.date_of_registration }}</p>
+    <p><strong>Party Affiliation:</strong> {{ voter.party_affiliation }}</p>
+    <p><strong>Precinct Number:</strong> {{ voter.precinct_number }}</p>
+    <p><strong>Voter Score:</strong> {{ voter.voter_score }}</p>
+    
+    <h3>Voting History</h3>
+    <p><strong>Voted in 2020 State Election:</strong> {{ voter.v20state }}</p>
+    <p><strong>Voted in 2021 Town Election:</strong> {{ voter.v21town }}</p>
+    <p><strong>Voted in 2021 Primary Election:</strong> {{ voter.v21primary }}</p>
+    <p><strong>Voted in 2022 General Election:</strong> {{ voter.v22general }}</p>
+    <p><strong>Voted in 2023 Town Election:</strong> {{ voter.v23town }}</p>
+    
+    <h3>Map</h3>
+    <a href="https://www.google.com/maps/search/?api=1&query={{ voter.residence_address_street_number }}+{{ voter.residence_address_street_name }}+Newton+MA+{{ voter.residence_address_zip }}" target="_blank">
+        View Address on Google Maps
+    </a>
+    
+    <p><a href="{% url 'voters' %}">Back to Voter List</a></p>
+{% endblock %}

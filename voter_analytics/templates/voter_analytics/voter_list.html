@@ -1,0 +1,42 @@
+<!--
+    File: voter_analytics/voter_list.html
+    Description: See the list of voters in the voter_analytics application.
+    Author: William Fugate wfugate@bu.edu
+-->
+{% extends "voter_analytics/base.html" %}
+
+{% block content %}
+    <h2>All Voters</h2>
+    
+    <form action="">
+        <div class="row">
+            {% include "voter_analytics/search.html" %}
+        </div>
+        <a class="buttons" href="{% url 'voters' %}">Clear Filters</a>
+    </form>
+    
+    <ul>
+    {% for voter in voters %} <!--for each voter in our database display their info in an li tag-->
+    <li>
+    <p>Name: {{ voter.first_name }} {{ voter.last_name }} </p>
+    <p>Address: {{ voter.residence_address_street_name }} {{ voter.residence_address_street_number }} Apt {{ voter.residence_address_apt_number }} </p>
+    <p> ZIP: {{ voter.residence_address_zip }}</p>
+    <p><a href="{% url 'voter' voter.pk %}">View Details</a></p>
+    </li>
+    {% endfor %}
+    </ul>
+    
+    <div id="pagination">
+    {% if is_paginated %}
+        {% if page_obj.has_previous %}
+            <a class="buttons" href="?page={{ page_obj.previous_page_number }}">Previous</a> <!--nagivates to the prev page-->
+        {% endif %}
+
+        <p>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</p> 
+
+        {% if page_obj.has_next %}
+            <a class="buttons" href="?page={{ page_obj.next_page_number }}">Next</a><!--nagivates to the next page-->
+        {% endif %}
+    {% endif %}
+    </div>
+{% endblock %}

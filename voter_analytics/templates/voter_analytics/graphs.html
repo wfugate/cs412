@@ -1,0 +1,28 @@
+<!--
+    File: voter_analytics/graphs.html
+    Description: graph display page for the voter_analytics app.
+    Author: William Fugate wfugate@bu.edu
+-->
+{% extends "voter_analytics/base.html" %}
+
+{% block content %}
+
+    <h2>Voter Analytics Graphs</h2>
+    <form action="">
+        <div class="row">
+            {% include "voter_analytics/search.html" %} <!--show the filter options-->
+        </div>
+        <a class="buttons" href="{% url 'graphs' %}">Clear Filters</a>
+    </form>
+    
+    <h3>Birth Year Distribution</h3>
+    {{ birth_year_graph|safe }}
+    
+    <h3>Party Affiliation Distribution</h3>
+    {{ party_affiliation_graph|safe }}
+    
+    <h3>Election Participation</h3>
+    {{ election_participation_graph|safe }}
+    
+    <p><a class="buttons" href="{% url 'voters' %}">Back to Voter List</a></p>
+{% endblock %}

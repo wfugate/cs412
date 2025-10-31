@@ -1,0 +1,79 @@
+<!--
+    File: voter_analytics/search.html
+    Description: search module for the voter_analytics application.
+    Author: William Fugate wfugate@bu.edu
+-->
+{% block content %}
+<table>
+<form id="searchform" action="{% url 'voters' %}">
+    <div id="search">
+    <tr>
+        <th>Party affiliation:</th>
+        <td><select name="party_affiliation" id="party_affiliation">
+            <option value="">All Parties</option>
+            {% for party in party_affiliations %} <!--populate the options of the dropdown with our part affiliations from the dataset-->
+                <option value="{{ party }}" {% if party == request.GET.party_affiliation %}selected{% endif %}> <!--makes the selection stay when the page reloads and filters-->
+                    {{ party }}
+                </option>
+            {% endfor %}
+        </select></td>
+    </tr>
+
+    <tr>
+        <th>Born After:</th>
+        <td><select name="min_birth_year" id="min_birth_year">
+            <option value="">Any Year</option>
+            {% for year in birth_years %} <!--populate the options of the dropdown with years from 1900-2010-->
+                <option value="{{ year }}" {% if year|stringformat:"s" == request.GET.min_birth_year %}selected{% endif %}> <!--makes the selection stay when the page reloads and filters-->
+                    {{ year }}
+                </option>
+            {% endfor %}
+        </select></td>
+    </tr>
+
+    <tr>
+        <th>Born Before:</th>
+        <td><select name="max_birth_year" id="max_birth_year">
+            <option value="">Any Year</option>
+            {% for year in birth_years %} <!--populate the options of the dropdown with years from 1900-2010-->
+                <option value="{{ year }}" {% if year|stringformat:"s" == request.GET.max_birth_year %}selected{% endif %}><!--makes the selection stay when the page reloads and filters-->
+                    {{ year }}
+                </option>
+            {% endfor %}
+        </select></td>
+    </tr>
+
+    <tr>
+        <th>Voter Score:</th>
+        <td><select name="voter_score" id="voter_score">
+            <option value="">Any Score</option>
+            {% for score in voter_scores %} <!--populate the options of the dropdown with numbers from 0 to 5-->
+                <option value="{{ score }}" {% if score|stringformat:"s" == request.GET.voter_score %}selected{% endif %}><!--makes the selection stay when the page reloads and filters-->
+                    {{ score }}
+                </option>
+            {% endfor %}
+        </select></td>
+    </tr>
+
+    <tr>
+        <th>Voted in Elections:</th> <!--did they vote in this election? checkboxes-->
+      <td>
+        <div class="checkbox-row">
+          <label><input type="checkbox" name="v20state" id="v20state" {% if request.GET.v20state %}checked{% endif %}> v20 State</label> <!--makes the selection stay when the page reloads and filters-->
+          <label><input type="checkbox" name="v21town" id="v21town" {% if request.GET.v21town %}checked{% endif %}> v21 Town</label><!--makes the selection stay when the page reloads and filters-->
+          <label><input type="checkbox" name="v21primary" id="v21primary" {% if request.GET.v21primary %}checked{% endif %}> v21 Primary</label><!--makes the selection stay when the page reloads and filters-->
+          <label><input type="checkbox" name="v22general" id="v22general" {% if request.GET.v22general %}checked{% endif %}> v22 General</label><!--makes the selection stay when the page reloads and filters-->
+          <label><input type="checkbox" name="v23town" id="v23town" {% if request.GET.v23town %}checked{% endif %}> v23 Town</label><!--makes the selection stay when the page reloads and filters-->
+        </div>
+      </td>
+    </tr>
+    </div>
+    
+    <tr>
+        <td><input class="buttons" type="submit"></td>
+        <td></td>
+    </tr>
+    
+</form>
+</table>
+{% endblock %}
