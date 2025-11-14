@@ -1,0 +1,16 @@
+<!--
+File: jokes.html
+Description: template for displaying all jokes
+Author: William Fugate wfugate@bu.edu
+-->
+{% extends "dadjokes/base.html" %}
+
+{% block content %}
+<h1>All Jokes</h1>
+
+{% for joke in jokes %}
+<p>{{ joke.text }}</p>
+<p>- {{ joke.contributor }}</p>
+<hr>
+{% endfor %}
+{% endblock %}

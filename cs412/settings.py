@@ -45,6 +45,9 @@ INSTALLED_APPS = [
     "quiz1",
     "mini_insta",
     "voter_analytics",
+    "dadjokes",
+    "rest_framework",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
@@ -55,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'cs412.urls'
@@ -130,13 +134,21 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8081",
+]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
-
+# REST_FRAMEWORK = {
+#     'DEFAULT_PERMISSION_CLASSES': 'rest_framework.pagination.PageNumberPagination',
+#     'PAGE_SIZE': 10,
+# }
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_URL= "media/"  # note: no leading slash!
 LOGIN_URL = '/login/'

@@ -1,0 +1,16 @@
+<!--
+File: pictures.html
+Description: template for displaying all pictures
+Author: William Fugate wfugate@bu.edu
+-->
+{% extends "dadjokes/base.html" %}
+
+{% block content %}
+<h1>All Pictures</h1>
+
+{% for picture in pictures %}
+<img src="{{ picture.image_url }}" alt="Picture">
+<p>- {{ picture.contributor }}</p>
+<hr>
+{% endfor %}
+{% endblock %}

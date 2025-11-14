@@ -1,0 +1,13 @@
+<!--
+File: picture_detail.html
+Description: template for displaying a single picture
+Author: William Fugate wfugate@bu.edu
+-->
+{% extends "dadjokes/base.html" %}
+
+{% block content %}
+<h1>Picture Detail</h1>
+
+<img src="{{ picture.image_url }}" alt="Picture">
+<p>- {{ picture.contributor }}</p>
+{% endblock %}

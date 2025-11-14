@@ -1,0 +1,20 @@
+<!--
+File: random.html
+Description: template for displaying a random joke and picture
+Author: William Fugate wfugate@bu.edu
+-->
+{% extends "dadjokes/base.html" %}
+
+{% block content %}
+<h1>Random Joke & Picture</h1>
+
+{% if joke %}
+<p>{{ joke.text }}</p>
+<p>- {{ joke.contributor }}</p>
+{% endif %}
+
+{% if picture %}
+<img src="{{ picture.image_url }}" alt="Picture">
+<p>- {{ picture.contributor }}</p>
+{% endif %}
+{% endblock %}

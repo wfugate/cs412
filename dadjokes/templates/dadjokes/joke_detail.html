@@ -1,0 +1,13 @@
+<!--
+File: joke+_detail.html
+Description: template for displaying a single joke 
+Author: William Fugate wfugate@bu.edu
+-->
+{% extends "dadjokes/base.html" %}
+
+{% block content %}
+<h1>Joke Detail</h1>
+
+<p>{{ joke.text }}</p>
+<p>- {{ joke.contributor }}</p>
+{% endblock %}
