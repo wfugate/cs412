@@ -18,12 +18,18 @@ PROXIMITY_THRESHOLD_METERS = 500
 
 class RunListCreateAPIView(generics.ListCreateAPIView):
     """An API view to return a listing of Runs or create a new Run."""
-    queryset = Run.objects.all()
     serializer_class = RunSerializer
+
+
+    def get_queryset(self):
+        """Filter runs to only show the authenticated user's runs"""
+        if self.request.user.is_authenticated:
+            return Run.objects.filter(user=self.request.user)
+        return Run.objects.none()
 
     def perform_create(self, serializer):
         """Override to update user profile stats when a new run is created."""
-        new_run = serializer.save()
+        new_run = serializer.save(user=self.request.user)
         
         try: #update the user profile stats
             with transaction.atomic(): #ensures that everything happens or nothing happens
