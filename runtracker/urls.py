@@ -3,6 +3,7 @@
 ## description: url pattern definition for runtracker app
 from django.urls import path
 from .views import *
+from .auth_views import login_view, register_view 
 
 urlpatterns = [
     path('runs/', RunListCreateAPIView.as_view(), name='run-list-create'),
@@ -17,4 +18,6 @@ urlpatterns = [
     path('groups/<int:group_id>/members/<int:user_id>/remove/', GroupRemoveMemberAPIView.as_view(), name='group-member-remove'),
     path('badges/', BadgeListAPIView.as_view(), name='badge-list'),
     path('badges/<int:pk>/', BadgeDetailAPIView.as_view(), name='badge-detail'),
+    path('auth/login/', login_view, name='login'),
+    path('auth/register/', register_view, name='register'),
 ]
