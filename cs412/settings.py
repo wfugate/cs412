@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "dadjokes",
     "rest_framework",
     "corsheaders",
+    "runtracker",
 ]
 
 MIDDLEWARE = [
