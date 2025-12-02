@@ -16,42 +16,42 @@ from .serializers import RunSerializer, UserProfileSerializer, GroupSerializer, 
 PROXIMITY_THRESHOLD_METERS = 500
 
 
-import logging
-logger = logging.getLogger(__name__)
-
 class RunListCreateAPIView(generics.ListCreateAPIView):
     """An API view to return a listing of Runs or create a new Run."""
     serializer_class = RunSerializer
     
     def get_queryset(self):
         """Filter runs to only show the authenticated user's runs"""
-        logger.error(f"DEBUG: request.user = {self.request.user}")
-        logger.error(f"DEBUG: is_authenticated = {self.request.user.is_authenticated}")
-        logger.error(f"DEBUG: user.id = {self.request.user.id if self.request.user.is_authenticated else 'N/A'}")
+        with open('/home/grad1/wfugate/debug.txt', 'a') as f:
+            f.write(f"\n=== New Request ===\n")
+            f.write(f"User: {self.request.user}\n")
+            f.write(f"User type: {type(self.request.user)}\n")
+            f.write(f"Authenticated: {self.request.user.is_authenticated}\n")
+            if self.request.user.is_authenticated:
+                f.write(f"User ID: {self.request.user.id}\n")
+                f.write(f"Username: {self.request.user.username}\n")
         
         if self.request.user.is_authenticated:
             runs = Run.objects.filter(user=self.request.user)
-            logger.error(f"DEBUG: Found {runs.count()} runs")
+            with open('/home/grad1/wfugate/debug.txt', 'a') as f:
+                f.write(f"Runs found: {runs.count()}\n")
             return runs
         
-        logger.error("DEBUG: User not authenticated, returning empty")
+        with open('/home/grad1/wfugate/debug.txt', 'a') as f:
+            f.write(f"User not authenticated - returning empty\n")
         return Run.objects.none()
-
+    
     def perform_create(self, serializer):
         """Override to update user profile stats when a new run is created."""
         new_run = serializer.save(user=self.request.user)
         
-        try: #update the user profile stats
-            with transaction.atomic(): #ensures that everything happens or nothing happens
+        try:
+            with transaction.atomic():
                 profile = UserProfile.objects.select_for_update().get(user=new_run.user)
-                
-                profile.total_distance_km += new_run.distance_km #update total distance
-                
-                if new_run.distance_km > profile.best_distance_km: #if this is the best run, update
+                profile.total_distance_km += new_run.distance_km
+                if new_run.distance_km > profile.best_distance_km:
                     profile.best_distance_km = new_run.distance_km
-                
                 profile.save()
-                
         except UserProfile.DoesNotExist:
             pass
 
