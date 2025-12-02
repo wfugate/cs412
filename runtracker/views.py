@@ -24,12 +24,9 @@ class RunListCreateAPIView(generics.ListCreateAPIView):
         """Filter runs to only show the authenticated user's runs"""
         with open('/home/grad1/wfugate/debug.txt', 'a') as f:
             f.write(f"\n=== New Request ===\n")
+            f.write(f"Authorization header: {self.request.META.get('HTTP_AUTHORIZATION', 'NOT FOUND')}\n")
             f.write(f"User: {self.request.user}\n")
-            f.write(f"User type: {type(self.request.user)}\n")
             f.write(f"Authenticated: {self.request.user.is_authenticated}\n")
-            if self.request.user.is_authenticated:
-                f.write(f"User ID: {self.request.user.id}\n")
-                f.write(f"Username: {self.request.user.username}\n")
         
         if self.request.user.is_authenticated:
             runs = Run.objects.filter(user=self.request.user)
