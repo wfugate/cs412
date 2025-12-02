@@ -16,15 +16,25 @@ from .serializers import RunSerializer, UserProfileSerializer, GroupSerializer, 
 PROXIMITY_THRESHOLD_METERS = 500
 
 
+import logging
+logger = logging.getLogger(__name__)
+
 class RunListCreateAPIView(generics.ListCreateAPIView):
     """An API view to return a listing of Runs or create a new Run."""
     serializer_class = RunSerializer
-
-
+    
     def get_queryset(self):
         """Filter runs to only show the authenticated user's runs"""
+        logger.error(f"DEBUG: request.user = {self.request.user}")
+        logger.error(f"DEBUG: is_authenticated = {self.request.user.is_authenticated}")
+        logger.error(f"DEBUG: user.id = {self.request.user.id if self.request.user.is_authenticated else 'N/A'}")
+        
         if self.request.user.is_authenticated:
-            return Run.objects.filter(user=self.request.user)
+            runs = Run.objects.filter(user=self.request.user)
+            logger.error(f"DEBUG: Found {runs.count()} runs")
+            return runs
+        
+        logger.error("DEBUG: User not authenticated, returning empty")
         return Run.objects.none()
 
     def perform_create(self, serializer):
