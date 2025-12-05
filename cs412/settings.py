@@ -149,7 +149,7 @@ STATICFILES_DIRS = [
 ]
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'runtracker.authentication.CustomHeaderTokenAuthentication',
+        'runtracker.authentication.CustomHeaderTokenAuthentication', #custom header for auth token instead of default
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',

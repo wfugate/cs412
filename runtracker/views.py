@@ -22,20 +22,9 @@ class RunListCreateAPIView(generics.ListCreateAPIView):
     
     def get_queryset(self):
         """Filter runs to only show the authenticated user's runs"""
-        with open('/home/grad1/wfugate/debug.txt', 'a') as f:
-            f.write(f"\n=== New Request ===\n")
-            f.write(f"Authorization header: {self.request.META.get('HTTP_AUTHORIZATION', 'NOT FOUND')}\n")
-            f.write(f"User: {self.request.user}\n")
-            f.write(f"Authenticated: {self.request.user.is_authenticated}\n")
-        
         if self.request.user.is_authenticated:
             runs = Run.objects.filter(user=self.request.user)
-            with open('/home/grad1/wfugate/debug.txt', 'a') as f:
-                f.write(f"Runs found: {runs.count()}\n")
             return runs
-        
-        with open('/home/grad1/wfugate/debug.txt', 'a') as f:
-            f.write(f"User not authenticated - returning empty\n")
         return Run.objects.none()
     
     def perform_create(self, serializer):
@@ -49,6 +38,17 @@ class RunListCreateAPIView(generics.ListCreateAPIView):
                 if new_run.distance_km > profile.best_distance_km:
                     profile.best_distance_km = new_run.distance_km
                 profile.save()
+                single_run_badges = Badge.objects.filter(criteria_km__lt=100)
+                for badge in single_run_badges:
+                    if new_run.distance_km >= badge.criteria_km:
+                        # add() won't create duplicates due to ManyToMany
+                        badge.earned_by.add(new_run.user)
+                
+                #check total distance badges (>= 100k)
+                total_distance_badges = Badge.objects.filter(criteria_km__gte=100)
+                for badge in total_distance_badges:
+                    if profile.total_distance_km >= badge.criteria_km:
+                        badge.earned_by.add(new_run.user)
         except UserProfile.DoesNotExist:
             pass
 
