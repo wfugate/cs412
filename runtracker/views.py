@@ -38,17 +38,15 @@ class RunListCreateAPIView(generics.ListCreateAPIView):
                 if new_run.distance_km > profile.best_distance_km:
                     profile.best_distance_km = new_run.distance_km
                 profile.save()
-                single_run_badges = Badge.objects.filter(criteria_km__lt=100)
-                for badge in single_run_badges:
-                    if new_run.distance_km >= badge.criteria_km:
-                        # add() won't create duplicates due to ManyToMany
-                        badge.earned_by.add(new_run.user)
-                
-                #check total distance badges (>= 100k)
-                total_distance_badges = Badge.objects.filter(criteria_km__gte=100)
-                for badge in total_distance_badges:
-                    if profile.total_distance_km >= badge.criteria_km:
-                        badge.earned_by.add(new_run.user)
+                for badge in Badge.objects.all():
+                    #single run badges (< 100k)
+                    if badge.criteria_km < 100:
+                        if new_run.distance_km >= badge.criteria_km:
+                            badge.earned_by.add(new_run.user)
+                    #total distance badges (>= 100k)
+                    else:
+                        if profile.total_distance_km >= badge.criteria_km:
+                            badge.earned_by.add(new_run.user)
         except UserProfile.DoesNotExist:
             pass
 
