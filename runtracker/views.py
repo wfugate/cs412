@@ -11,10 +11,15 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 
 from .models import Run, UserProfile, Group, GroupMembership, User, Badge
-from .serializers import RunSerializer, UserProfileSerializer, GroupSerializer, BadgeSerializer, GroupMembershipSerializer
+from .serializers import RunSerializer, UserProfileSerializer, GroupSerializer, BadgeSerializer, GroupMembershipSerializer, UserSerializer
 
 PROXIMITY_THRESHOLD_METERS = 500
 
+
+class UserListAPIView(generics.ListAPIView):
+    """List all users"""
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 class RunListCreateAPIView(generics.ListCreateAPIView):
     """An API view to return a listing of Runs or create a new Run."""
