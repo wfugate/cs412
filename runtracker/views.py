@@ -105,22 +105,6 @@ class RunProximitySearchAPIView(APIView):
 
         return Response(nearby_runs_data)
     
-class GroupDestroyAPIView(generics.DestroyAPIView):
-    """Delete a group"""
-    queryset = Group.objects.all()
-    serializer_class = GroupSerializer
-    
-    def destroy(self, request, *args, **kwargs):
-        group = self.get_object()
-        
-        if group.creator != request.user: #check if user is the creator
-            return Response(
-                {"error": "only the group creator can delete this group!"},
-                status=status.HTTP_403_FORBIDDEN
-            )
-        
-        return super().destroy(request, *args, **kwargs) #delete the group
-
 
 class GroupRemoveMemberAPIView(APIView):
     """Remove a member from a group"""
@@ -193,10 +177,21 @@ class GroupListCreateAPIView(generics.ListCreateAPIView):
         #add the creator as a member too
         GroupMembership.objects.create(group=group, user=self.request.user)
 
-class GroupDetailAPIView(generics.RetrieveUpdateAPIView):
-    """View to retrieve or update a group"""
+class GroupDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    """View to retrieve, update, or delete a group"""
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
+    
+    def destroy(self, request, *args, **kwargs):
+        group = self.get_object()
+        
+        if group.creator != request.user:
+            return Response(
+                {"error": "Only the group creator can delete this group"},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        
+        return super().destroy(request, *args, **kwargs)
 
 class BadgeListAPIView(generics.ListAPIView):
     """View to list all badges"""
