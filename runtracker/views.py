@@ -177,6 +177,20 @@ class GroupListCreateAPIView(generics.ListCreateAPIView):
         #add the creator as a member too
         GroupMembership.objects.create(group=group, user=self.request.user)
 
+
+class GroupRunsAPIView(generics.ListAPIView):
+    """Get all runs for members of a group"""
+    serializer_class = RunSerializer
+    
+    def get_queryset(self):
+        group_id = self.kwargs['group_id']
+        group = get_object_or_404(Group, pk=group_id)
+        
+        member_ids = group.memberships.values_list('user_id', flat=True)
+        
+        #get up to last 10 runs per person
+        return Run.objects.filter(user_id__in=member_ids).order_by('-start_time')[:10]
+
 class GroupDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     """View to retrieve, update, or delete a group"""
     queryset = Group.objects.all()

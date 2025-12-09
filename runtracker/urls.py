@@ -21,4 +21,5 @@ urlpatterns = [
     path('auth/login/', login_view, name='login'),
     path('auth/register/', register_view, name='register'),
     path('users/', UserListAPIView.as_view(), name='user-list'),
+    path('groups/<int:group_id>/runs/', GroupRunsAPIView.as_view(), name='group-runs'),
 ]
